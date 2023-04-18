@@ -58,8 +58,12 @@ export default class ProductManager {
     getProductById = (id)=>{
         const list = JSON.parse(fs.readFileSync(this.path, 'utf-8'));
         const search = list.find(product=>product.id === id)
-        search === undefined ? console.log('Object id:'+id+ ' no exist') : console.log(`The object with id:${id} is: ${JSON.stringify(search, null, '\t')}`); //Lo paso a string para que no me tire [Object Object]
+        search === undefined ? console.log('Object id:'+id+ ' no exist') : console.log(`The object with id:${id} is: ${JSON.stringify(search, null, '\t')}`);
+        return search
+        //Lo paso a string para que no me tire [Object Object]
     }
+
+    
      
     getUpdateProduct = (id, key, val)=>{
         const indexProd = this.products.findIndex(prod=>prod.id === id);

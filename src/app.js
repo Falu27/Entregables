@@ -28,10 +28,10 @@ app.get('/products', async (req, res)=>{
 //Obtener producto por ID
 app.get('/products/:id', async(req, res) =>{
     try {
-        const id = req.params.id
-        const search = await productManager.getProductById(id)
+        const id = parseInt(req.params.id)
+        const search = productManager.getProductById(id)
         if(!search){
-            res.status(404).send(`Products ${id} Not found`)
+            res.status(404).send(`Products id ${id} Not found`)
             return;
         }
         res.send(search);
