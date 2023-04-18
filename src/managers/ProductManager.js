@@ -1,17 +1,28 @@
 import fs from 'fs';
-
-
-class ProductManager {
+export default class ProductManager {
 
 
     constructor(ruta){
-        this.index = 0
-        this.products = []
+        this.index = 0;
+        this.products = [];
         this.path = ruta;
-        fs.writeFileSync(this.path, JSON.stringify(this.products, null , "\t") )
     }
-
+    //Simplificamos el guardar
+    writeFile = ()=>{
+        try{
+        const save = JSON.stringify(this.products, null, "\t" );
+        fs.writeFileSync(this.path, save)
+    }
+    catch(error){
+        console.log('Save Error!!')
+    }
+    }
+    
     getProducts=()=>{
+        this.products = JSON.parse(fs.readFileSync(this.path, 'utf-8'))
+        return this.products
+    }
+    /* getProducts=()=>{
         if(fs.existsSync(this.path)){
         const listProducts = fs.readFileSync(this.path, 'utf8')
         const products = JSON.parse(listProducts)
@@ -20,7 +31,7 @@ class ProductManager {
         return[];
     }
     }
-    
+    */
 
     addProduct=({title, description, price, thumbnail, code , stock})=>{
         if(!title || !description || !price || !thumbnail || !code || !stock){
@@ -41,13 +52,13 @@ class ProductManager {
         }
 
         this.products.push(product)
-        fs.writeFileSync(this.path, JSON.stringify(this.products, null , '\t') )
+        this.writeFile()
     }
 
     getProductById = (id)=>{
         const list = JSON.parse(fs.readFileSync(this.path, 'utf-8'));
         const search = list.find(product=>product.id === id)
-        search === undefined ? console.log('Object id:'+id+ ' no exist') : console.log(`The object with id:${id} is: ${JSON.stringify(search, null, '\t')}`);//Lo paso a string para que no me tire [Object Object]
+        search === undefined ? console.log('Object id:'+id+ ' no exist') : console.log(`The object with id:${id} is: ${JSON.stringify(search, null, '\t')}`); //Lo paso a string para que no me tire [Object Object]
     }
      
     getUpdateProduct = (id, key, val)=>{
@@ -80,7 +91,10 @@ class ProductManager {
 
 //...............................................
 
-ProductManager = new ProductManager('./files/Products.json')
+const Pmanager = new ProductManager('../files/Products.json')
+
+/*Esto no se utiliza para proximas entregas-----------------
+Los productos ya se cargaron
 
 const product1 ={
         title: "TV 50 Smart",
@@ -123,11 +137,56 @@ const product4 ={
 
 const product5 ={
     title: 'Asus IdeaPad',
-    description: 'Notebook". 16GB Ram. 512GB Memory',
+    description: 'Notebook. 16GB Ram. 512GB Memory',
     price: 580000,
     thumbnail: './...',
     code: 50,
     stock:4
+}
+
+const product6 ={
+    title: 'Lenovo Pad',
+    description: 'Tablet Slim". 4GB Ram. 64GB Memory',
+    price: 80000,
+    thumbnail: './...',
+    code: 60,
+    stock:5
+}
+
+const product7 ={
+    title: 'TV OLED 55',
+    description: 'TV 55". OLED. Slim',
+    price: 180000,
+    thumbnail: './...',
+    code: 70,
+    stock:4
+}
+
+const product8 ={
+    title: 'Xiaomi Speak',
+    description: 'Parlante Xiaomi 10W. ',
+    price: 10000,
+    thumbnail: './...',
+    code: 80,
+    stock:12
+}
+
+const product9 ={
+    title: 'Iphone',
+    description: 'Iphone 8. 128GB. Repair',
+    price: 40000,
+    thumbnail: './...',
+    code: 90,
+    stock:1
+}
+
+const product10 ={
+    title: 'Monitor LG',
+    description: 'Monitor 29". UltraWide. IPS',
+    price: 50000,
+    thumbnail: './...',
+    code: 100,
+    stock:7
 }
 
 //Agregando Productos - addProduct
@@ -136,6 +195,13 @@ ProductManager.addProduct(product2);
 ProductManager.addProduct(product3);
 ProductManager.addProduct(product4);
 ProductManager.addProduct(product5);
+ProductManager.addProduct(product6);
+ProductManager.addProduct(product7);
+ProductManager.addProduct(product8);
+ProductManager.addProduct(product9);
+ProductManager.addProduct(product10);
+
+
 
 //Buscar producto por ID y devolver en Objeto- getProductById
 ProductManager.getProductById(2); //Buscar el producto ID2 y mostrarlo
@@ -154,3 +220,4 @@ console.log(ProductManager.getProducts());
 
 export default ProductManager;
 
+*/
